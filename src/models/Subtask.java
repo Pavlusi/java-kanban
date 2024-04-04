@@ -1,14 +1,12 @@
 package models;
 
 
-import util.Status;
-
 public class Subtask extends Task {
 
     private Epic epic;
 
-    public Subtask(String name, String description, Epic epic, Status status) {
-        super(name, description, status);
+    public Subtask(String name, String description, Epic epic) {
+        super(name, description);
         this.epic = epic;
     }
 

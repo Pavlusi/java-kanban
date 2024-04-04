@@ -3,26 +3,19 @@ package service;
 import models.Epic;
 import models.Subtask;
 import models.Task;
-import util.Status;
+import models.Status;
 
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
-import java.util.stream.Collectors;
 
 public class TaskManager {
 
     private int idCounter = 0;
 
-    private HashMap<Integer, Task> allTasks;
-    private HashMap<Integer, Epic> allEpics;
-    private HashMap<Integer, Subtask> allSubtasks;
-
-    public TaskManager() {
-        this.allTasks = new HashMap<>();
-        this.allSubtasks = new HashMap<>();
-        this.allEpics = new HashMap<>();
-    }
+    private HashMap<Integer, Task> allTasks = new HashMap<>();
+    private HashMap<Integer, Epic> allEpics = new HashMap<>();
+    private HashMap<Integer, Subtask> allSubtasks = new HashMap<>();
 
 
     public List<Task> getTasksList() {
@@ -93,24 +86,27 @@ public class TaskManager {
     }
 
     public void updateTask(Task updatedTask) {
-        allTasks.put(updatedTask.getId(), updatedTask);
+        if (allTasks.containsKey(updatedTask.getId())) {
+            allTasks.put(updatedTask.getId(), updatedTask);
+        }
     }
 
     public void updateEpic(Epic updatedEpic) {
-        if (updatedEpic == null) {
-            return;
+        if (allEpics.containsKey(updatedEpic.getId())) {
+            Epic saved = allEpics.get(updatedEpic.getId());
+            saved.setName(updatedEpic.getName());
+            saved.setDescription(updatedEpic.getDescription());
         }
-        Epic saved = allEpics.get(updatedEpic.getId());
-        saved.setName(updatedEpic.getName());
-        saved.setDescription(updatedEpic.getDescription());
     }
 
     public void updateSubtask(Subtask updatedSubtask) {
-        Subtask oldSubtask = allSubtasks.put(updatedSubtask.getId(), updatedSubtask);
-        Epic epic = updatedSubtask.getEpic();
-        epic.getSubtasks().remove(oldSubtask);
-        epic.getSubtasks().add(updatedSubtask);
-        checkEpicStatus(epic);
+        if (allSubtasks.containsKey(updatedSubtask.getId())) {
+            Subtask oldSubtask = allSubtasks.put(updatedSubtask.getId(), updatedSubtask);
+            Epic epic = updatedSubtask.getEpic();
+            epic.getSubtasks().remove(oldSubtask);
+            epic.getSubtasks().add(updatedSubtask);
+            checkEpicStatus(epic);
+        }
     }
 
     public void deleteTaskById(int id) {
@@ -121,7 +117,6 @@ public class TaskManager {
         Epic deletedEpic = allEpics.remove(id);
         List<Subtask> deletedEpicSubtasks = deletedEpic.getSubtasks();
         deletedEpicSubtasks.forEach(subtask -> allSubtasks.remove(subtask.getId()));
-        deletedEpicSubtasks.clear();
     }
 
     public void deleteSubtaskById(int id) {
