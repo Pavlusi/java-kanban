@@ -53,9 +53,6 @@ public class Main {
         taskManager.deleteTaskById(task1.getId());
         taskManager.deleteEpicById(epic2.getId());
 
-        System.out.println(taskManager.getTasksList());
-        System.out.println(taskManager.getEpicList());
-        System.out.println(taskManager.getSubtaskList());
 
 
 
