@@ -12,10 +12,6 @@ public class InMemoryTaskManager implements TaskManager {
 
     private HistoryManager historyManager = Managers.getDefaultHistory();
 
-    public InMemoryTaskManager(HistoryManager historyManager){
-        this.historyManager = historyManager;
-    }
-
     private int idCounter = 0;
 
     private HashMap<Integer, Task> allTasks = new HashMap<>();
@@ -178,7 +174,7 @@ public class InMemoryTaskManager implements TaskManager {
         return allEpics.get(id).getSubtasks();
     }
 
-
+    @Override
     public List<Task> getHistory() {
         return historyManager.getHistory();
     }

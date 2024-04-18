@@ -1,14 +1,16 @@
-import models.Epic;
-import models.Status;
-import models.Subtask;
-import models.Task;
+import model.Epic;
+import model.Status;
+import model.Subtask;
+import model.Task;
+import service.InMemoryTaskManager;
 import service.TaskManager;
+import util.Managers;
 
 public class Main {
 
 
     public static void main(String[] args) {
-        TaskManager taskManager = new TaskManager();
+        TaskManager taskManager = Managers.getDefault();
 
         Task task1 =taskManager.saveTask(new Task("TaskName1", "Task"));
         Task task2 = taskManager.saveTask(new Task("TaskName2", "Task"));
@@ -52,23 +54,5 @@ public class Main {
 
         taskManager.deleteTaskById(task1.getId());
         taskManager.deleteEpicById(epic2.getId());
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
     }
 }
