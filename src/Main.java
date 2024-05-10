@@ -11,7 +11,7 @@ public class Main {
     public static void main(String[] args) {
         TaskManager taskManager = Managers.getDefault();
 
-        Task task1 =taskManager.saveTask(new Task("TaskName1", "Task"));
+        Task task1 = taskManager.saveTask(new Task("TaskName1", "Task"));
         Task task2 = taskManager.saveTask(new Task("TaskName2", "Task"));
 
         Epic epic1 = taskManager.saveEpic(new Epic("EpicName1", "Epic"));
