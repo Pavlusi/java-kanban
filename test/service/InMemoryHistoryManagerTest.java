@@ -1,13 +1,10 @@
 package service;
 
-import model.Epic;
-import model.Subtask;
 import model.Task;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import testUtils.TestUtils;
-import util.Managers;
 
 import java.util.List;
 
@@ -32,43 +29,67 @@ class InMemoryHistoryManagerTest {
     }
 
     @Test
-    void shouldAddTaskInEndOfList() {
-        Task task = testUtils.getTask();
+    void shouldAddTaskInHistoryManager() {
+        Task task = testUtils.getTaskWithNewId();
         inMemoryHistoryManager.add(task);
         List<Task> tasks = inMemoryHistoryManager.getHistory();
-
-        Assertions.assertEquals(task, tasks.get(9));
+        Assertions.assertEquals(task, tasks.get(tasks.size() - 1));
 
     }
 
     @Test
-    void shouldDeleteTaskFromBeginningListWithSize10WhenAddNewTask() {
-        Task taskFromBeginningBeforeCapacityExceeds10 = inMemoryHistoryManager.getHistory().get(0);
-
-        inMemoryHistoryManager.add(testUtils.getTask());
-
-        Task taskFromBeginningAfterCapacityExceeds10 = inMemoryHistoryManager.getHistory().get(0);
-
-        Assertions.assertNotEquals(taskFromBeginningBeforeCapacityExceeds10, taskFromBeginningAfterCapacityExceeds10
-                , "Таск из начала списка не удалтился");
-    }
-
-    @Test
-    void shouldKeepCapacity10WhenAddMoreThen10Tasks() {
-        for (Task task : testUtils.getListTasksWithId(20)) {
-            inMemoryHistoryManager.add(task);
+    void shouldKeepOrderOfAdding() {
+        List<Task> tasksList = inMemoryHistoryManager.getHistory();
+        for (int i = 0; i < tasksList.size(); i++) {
+            Assertions.assertEquals(tasksList.get(i).getId(), i + 1);
         }
-
-        Assertions.assertEquals(10, inMemoryHistoryManager.getHistory().size());
     }
 
+    @Test
+    void shouldRemoveTaskFromBeginningHistoryManager() {
+        Task task = inMemoryHistoryManager.getHistory().get(0);
+        inMemoryHistoryManager.remove(task.getId());
+        Assertions.assertEquals(9, inMemoryHistoryManager.getHistory().size());
+        Assertions.assertEquals(2, inMemoryHistoryManager.getHistory().get(0).getId());
+    }
 
     @Test
-    void shouldAddAnyTaskTypeInHistoryList() {
-        inMemoryHistoryManager.getHistory().clear();
-        inMemoryHistoryManager.add(testUtils.getTask());
-        inMemoryHistoryManager.add(testUtils.getEpic());
-        inMemoryHistoryManager.add(testUtils.getSubtask(testUtils.getEpic()));
-        Assertions.assertEquals(3, inMemoryHistoryManager.getHistory().size());
+    void shouldRemoveTaskFromMiddleHistoryManager() {
+        Task task = inMemoryHistoryManager.getHistory().get(5);
+        inMemoryHistoryManager.remove(task.getId());
+        Assertions.assertEquals(9, inMemoryHistoryManager.getHistory().size());
+        Assertions.assertEquals(7, inMemoryHistoryManager.getHistory().get(5).getId());
+    }
+
+    @Test
+    void shouldRemoveTaskFromEndHistoryManager() {
+        Task task = inMemoryHistoryManager.getHistory().get(9);
+        inMemoryHistoryManager.remove(task.getId());
+        Assertions.assertEquals(9, inMemoryHistoryManager.getHistory().size());
+        Assertions.assertEquals(9, inMemoryHistoryManager.getHistory().get(8).getId());
+    }
+
+    @Test
+    void shouldAddAnyTaskTypeInHistoryManager() {
+        inMemoryHistoryManager.add(testUtils.getTaskWithNewId());
+        inMemoryHistoryManager.add(testUtils.getEpicWithNewId());
+        inMemoryHistoryManager.add(testUtils.getSubtaskWithNewId(testUtils.getEpic()));
+        Assertions.assertEquals(13, inMemoryHistoryManager.getHistory().size());
+    }
+
+    @Test
+    void shouldChangeTaskToNewInHistoryManagerIfHisIdAlreadyExists() {
+        Task task1 = testUtils.getTaskWithNewId();
+        Task task2 = testUtils.getTaskWithNewId();
+        task2.setId(task1.getId());
+        task2.setName("newName");
+
+        inMemoryHistoryManager.add(task1);
+        Assertions.assertEquals(11, inMemoryHistoryManager.getHistory().size());
+
+        inMemoryHistoryManager.add(task2);
+        Assertions.assertEquals(11, inMemoryHistoryManager.getHistory().size());
+        Assertions.assertEquals(task2.getName(), inMemoryHistoryManager.getHistory().get(10).getName());
+
     }
 }

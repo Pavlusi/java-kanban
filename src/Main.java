@@ -54,5 +54,7 @@ public class Main {
 
         taskManager.deleteTaskById(task1.getId());
         taskManager.deleteEpicById(epic2.getId());
+
     }
+
 }

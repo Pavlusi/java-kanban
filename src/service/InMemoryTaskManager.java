@@ -8,6 +8,7 @@ import util.Managers;
 
 import java.util.*;
 
+
 public class InMemoryTaskManager implements TaskManager {
 
     private HistoryManager historyManager = Managers.getDefaultHistory();
@@ -42,12 +43,15 @@ public class InMemoryTaskManager implements TaskManager {
 
     @Override
     public void deleteAllTasks() {
+        allTasks.keySet().forEach(id -> historyManager.remove(id));
         allTasks.clear();
     }
 
 
     @Override
     public void deleteAllEpics() {
+        allEpics.keySet().forEach(id -> historyManager.remove(id));
+        allSubtasks.keySet().forEach(id -> historyManager.remove(id));
         allEpics.clear();
         allSubtasks.clear();
     }
@@ -55,6 +59,7 @@ public class InMemoryTaskManager implements TaskManager {
 
     @Override
     public void deleteAllSubtask() {
+        allSubtasks.keySet().forEach(id -> historyManager.remove(id));
         for (Subtask subtask : allSubtasks.values()) {
             Epic epic = subtask.getEpic();
             List<Subtask> EpicSubtasks = epic.getSubtasks();
@@ -147,6 +152,7 @@ public class InMemoryTaskManager implements TaskManager {
 
     @Override
     public void deleteTaskById(int id) {
+        historyManager.remove(id);
         allTasks.remove(id);
     }
 
@@ -154,14 +160,17 @@ public class InMemoryTaskManager implements TaskManager {
     @Override
     public void deleteEpicById(int id) {
         Epic deletedEpic = allEpics.remove(id);
+        historyManager.remove(id);
         List<Subtask> deletedEpicSubtasks = deletedEpic.getSubtasks();
         deletedEpicSubtasks.forEach(subtask -> allSubtasks.remove(subtask.getId()));
+        deletedEpicSubtasks.forEach(subtask -> historyManager.remove(subtask.getId()));
     }
 
 
     @Override
     public void deleteSubtaskById(int id) {
         Subtask deletedSubtask = allSubtasks.remove(id);
+        historyManager.remove(id);
         Epic epic = deletedSubtask.getEpic();
         List<Subtask> epicsSubtasks = epic.getSubtasks();
         epicsSubtasks.remove(deletedSubtask);

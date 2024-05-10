@@ -11,8 +11,17 @@ import java.util.List;
 
 public class TestUtils {
 
+    private int counter = 0;
+
+
     public Task getTask() {
         return new Task("testTaskName", "testDescription");
+    }
+
+    public Task getTaskWithNewId() {
+        Task task = new Task("testName", "test");
+        task.setId(++counter);
+        return task;
     }
 
     public Task getUpdatedTaskWithStatusDone(Task task) {
@@ -26,6 +35,12 @@ public class TestUtils {
         return new Epic("testEpicName", "testDescription");
     }
 
+    public Epic getEpicWithNewId() {
+        Epic epic = new Epic("testName", "test");
+        epic.setId(++counter);
+        return epic;
+    }
+
     public Epic getUpdatedEpic(Epic epic) {
         Epic epicToReturn = new Epic("newEpicName", "newDescription");
         epicToReturn.setId(epic.getId());
@@ -36,6 +51,12 @@ public class TestUtils {
 
     public Subtask getSubtask(Epic epic) {
         return new Subtask("testSubtaskName", "testDescription", epic);
+    }
+
+    public Subtask getSubtaskWithNewId(Epic epic) {
+        Subtask subtask = new Subtask("testName", "test", epic);
+        subtask.setId(++counter);
+        return subtask;
     }
 
     public Subtask getUpdatedSubtaskWithStatusDone(Subtask subtask) {
@@ -57,7 +78,7 @@ public class TestUtils {
     public List<Task> getListTasksWithId(int numberOfTasks) {
         List<Task> tasks = new ArrayList<>(numberOfTasks);
         for (int i = 0; i < numberOfTasks; i++) {
-            Task task = new Task("testTask" + (i + 1) , "testDescription");
+            Task task = new Task("testTask" + (++counter), "testDescription");
             task.setId(i + 1);
             tasks.add(task);
         }
