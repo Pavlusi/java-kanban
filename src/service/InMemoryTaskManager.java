@@ -62,8 +62,8 @@ public class InMemoryTaskManager implements TaskManager {
         allSubtasks.keySet().forEach(id -> historyManager.remove(id));
         for (Subtask subtask : allSubtasks.values()) {
             Epic epic = subtask.getEpic();
-            List<Subtask> EpicSubtasks = epic.getSubtasks();
-            EpicSubtasks.clear();
+            List<Subtask> epicSubtasks = epic.getSubtasks();
+            epicSubtasks.clear();
             checkEpicStatus(epic);
         }
         allSubtasks.clear();
