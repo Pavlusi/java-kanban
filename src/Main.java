@@ -2,14 +2,13 @@ import model.Epic;
 import model.Status;
 import model.Subtask;
 import model.Task;
-import service.TaskManager;
-import util.Managers;
+import service.InMemoryTaskManager;
 
 public class Main {
 
 
     public static void main(String[] args) {
-        TaskManager taskManager = Managers.getDefault();
+        InMemoryTaskManager taskManager = new InMemoryTaskManager();
 
         Task task1 = taskManager.saveTask(new Task("TaskName1", "Task"));
         Task task2 = taskManager.saveTask(new Task("TaskName2", "Task"));
@@ -53,6 +52,10 @@ public class Main {
 
         taskManager.deleteTaskById(task1.getId());
         taskManager.deleteEpicById(epic2.getId());
+
+        System.out.println(taskManager.getTasksList());
+        System.out.println(taskManager.getEpicList());
+        System.out.println(taskManager.getSubtaskList());
 
     }
 
