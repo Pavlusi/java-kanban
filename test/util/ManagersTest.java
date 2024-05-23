@@ -2,8 +2,6 @@ package util;
 
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
-import service.InMemoryTaskManager;
-import service.TaskManager;
 
 class ManagersTest {
 

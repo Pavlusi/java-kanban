@@ -6,7 +6,6 @@ import model.Subtask;
 import model.Task;
 import org.junit.jupiter.api.*;
 import testUtils.TestUtils;
-import util.Managers;
 
 import java.util.List;
 
@@ -26,11 +25,11 @@ class InMemoryTaskManagerTest {
 
     @BeforeEach
     void init() {
-        inMemoryTaskManager = new InMemoryTaskManager(new InMemoryHistoryManager());
-        task1 = inMemoryTaskManager.saveTask(testUtils.getTask());
-        epic1 = inMemoryTaskManager.saveEpic(testUtils.getEpic());
-        subtask1 = inMemoryTaskManager.saveSubtask(testUtils.getSubtask(epic1));
-        subtask2 = inMemoryTaskManager.saveSubtask(testUtils.getSubtask(epic1));
+        inMemoryTaskManager = new InMemoryTaskManager();
+        task1 = inMemoryTaskManager.saveTask(testUtils.getTaskWithNewId());
+        epic1 = inMemoryTaskManager.saveEpic(testUtils.getEpicWithNewId());
+        subtask1 = inMemoryTaskManager.saveSubtask(testUtils.getSubtaskWithNewId(epic1));
+        subtask2 = inMemoryTaskManager.saveSubtask(testUtils.getSubtaskWithNewId(epic1));
 
     }
 
@@ -229,7 +228,6 @@ class InMemoryTaskManagerTest {
         Task task = inMemoryTaskManager.saveTask(testUtils.getTask());
 
         Assertions.assertEquals(5, task.getId());
-
     }
 
 
