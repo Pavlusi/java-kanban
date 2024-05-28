@@ -4,12 +4,12 @@ import model.*;
 
 public class TaskConverter {
 
-    static public String toString(Task task) {
+    public static String toString(Task task) {
         return task.getId() + "," + task.getTaskType() + "," + task.getName() + "," + task.getStatus()
                 + "," + task.getDescription() + "," + (task.getEpic() != null ? task.getEpic().getId() : null) + "\n";
     }
 
-    static public Task toTask(String str) {
+    public static Task toTask(String str) {
         String[] fields = str.split(",");
         int id = Integer.parseInt(fields[0]);
         TaskType type = TaskType.valueOf(fields[1]);
