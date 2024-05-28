@@ -14,6 +14,12 @@ public class Task {
         this.status = Status.NEW;
     }
 
+    public Task(int id, String name, Status status, String description) {
+        this.id = id;
+        this.name = name;
+        this.description = description;
+        this.status = status;
+    }
 
     public int getId() {
         return id;
@@ -45,6 +51,14 @@ public class Task {
 
     public void setStatus(Status status) {
         this.status = status;
+    }
+
+    public TaskType getTaskType() {
+        return TaskType.TASK;
+    }
+
+    public Epic getEpic() {
+        return null;
     }
 
     @Override

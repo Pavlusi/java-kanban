@@ -5,11 +5,14 @@ import java.util.List;
 
 public class Epic extends Task {
 
-    private List<Subtask> subtasks = new ArrayList<>();
+    private final List<Subtask> subtasks = new ArrayList<>();
 
     public Epic(String name, String description) {
         super(name, description);
+    }
 
+    public Epic(int id, String name, Status status, String description) {
+        super(id, name, status, description);
     }
 
     public List<Subtask> getSubtasks() {
@@ -20,6 +23,11 @@ public class Epic extends Task {
         this.subtasks.add(subtasks);
     }
 
+
+    @Override
+    public TaskType getTaskType() {
+        return TaskType.EPIC;
+    }
 
     @Override
     public String toString() {

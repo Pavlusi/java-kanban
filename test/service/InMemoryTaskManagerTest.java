@@ -4,7 +4,9 @@ import model.Epic;
 import model.Status;
 import model.Subtask;
 import model.Task;
-import org.junit.jupiter.api.*;
+import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 import testUtils.TestUtils;
 
 import java.util.List;
@@ -12,7 +14,7 @@ import java.util.List;
 class InMemoryTaskManagerTest {
 
     private InMemoryTaskManager inMemoryTaskManager;
-    private TestUtils testUtils = new TestUtils();
+    private final TestUtils testUtils = new TestUtils();
 
     private Task task1;
 
@@ -190,31 +192,40 @@ class InMemoryTaskManagerTest {
     }
 
     @Test
-    void epicShouldHasStatusNewWhenAllHisSubtaskHaveStatusNew() {
+    public void checkEpicStatus() {
+        epicShouldHasStatusNewWhenAllHisSubtaskHaveStatusNew();
+        epicShouldHasStatusInProgressWhenOneOfHisSubtaskHasStatusInProgressOthersNew();
+        epicShouldHasStatusInProgressWhenOneOfHisSubtaskHasStatusDoneOtherNew();
+        epicShouldHasStatusDoneWhenAllSubtaskHaveStatusDone();
+        epicShouldChangeStatusFromDoneToNewAfterDeleteListHisSubtaskWithStatusDone();
+    }
+
+
+    private void epicShouldHasStatusNewWhenAllHisSubtaskHaveStatusNew() {
         Assertions.assertEquals(Status.NEW, epic1.getStatus());
     }
 
-    @Test
-    void epicShouldHasStatusInProgressWhenOneOfHisSubtaskHasStatusInProgressOthersNew() {
+
+    private void epicShouldHasStatusInProgressWhenOneOfHisSubtaskHasStatusInProgressOthersNew() {
         inMemoryTaskManager.updateSubtask(testUtils.getUpdatedSubtaskWithStatusInProgress(subtask1));
         Assertions.assertEquals(Status.IN_PROGRESS, epic1.getStatus());
     }
 
-    @Test
-    void epicShouldHasStatusInProgressWhenOneOfHisSubtaskHasStatusDoneOtherNew() {
+
+    private void epicShouldHasStatusInProgressWhenOneOfHisSubtaskHasStatusDoneOtherNew() {
         inMemoryTaskManager.updateSubtask(testUtils.getUpdatedSubtaskWithStatusDone(subtask1));
         Assertions.assertEquals(Status.IN_PROGRESS, epic1.getStatus());
     }
 
-    @Test
-    void epicShouldHasStatusDoneWhenAllSubtaskHaveStatusDone() {
+
+    private void epicShouldHasStatusDoneWhenAllSubtaskHaveStatusDone() {
         inMemoryTaskManager.updateSubtask(testUtils.getUpdatedSubtaskWithStatusDone(subtask1));
         inMemoryTaskManager.updateSubtask(testUtils.getUpdatedSubtaskWithStatusDone(subtask2));
         Assertions.assertEquals(Status.DONE, epic1.getStatus());
     }
 
-    @Test
-    void epicShouldChangeStatusFromDoneToNewAfterDeleteListHisSubtaskWithStatusDone() {
+
+    private void epicShouldChangeStatusFromDoneToNewAfterDeleteListHisSubtaskWithStatusDone() {
         inMemoryTaskManager.updateSubtask(testUtils.getUpdatedSubtaskWithStatusDone(subtask1));
         inMemoryTaskManager.updateSubtask(testUtils.getUpdatedSubtaskWithStatusDone(subtask2));
 
