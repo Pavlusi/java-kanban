@@ -108,7 +108,7 @@ public class FileBackedTaskManager extends InMemoryTaskManager {
                 fileWriter.write(TaskConverter.toString(task));
             }
         } catch (IOException e) {
-            throw new ManagerSaveException();
+            throw new ManagerSaveException("Ошибка сохранения состояния менеджера в файл");
         }
     }
 
@@ -141,7 +141,7 @@ public class FileBackedTaskManager extends InMemoryTaskManager {
             taskManager.idCounter = maxId;
 
         } catch (IOException e) {
-            throw new ManagerLoadException();
+            throw new ManagerLoadException("Ошибка загрузки состояния менеджера из файла");
         }
         return taskManager;
 
