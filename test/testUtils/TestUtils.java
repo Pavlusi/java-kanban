@@ -5,21 +5,29 @@ import model.Status;
 import model.Subtask;
 import model.Task;
 
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
 public class TestUtils {
 
     private int counter = 0;
+    private int minutesCounter = 0;
 
 
     public Task getTask() {
-        return new Task("testTaskName", "testDescription");
+        Task task = new Task("testTaskName", "testDescription");
+        task.setStartTime(LocalDateTime.now().plusMinutes(minutesCounter));
+        minutesCounter = minutesCounter + 20;
+        return task;
     }
+
 
     public Task getTaskWithNewId() {
         Task task = new Task("testName", "test");
         task.setId(++counter);
+        task.setStartTime(LocalDateTime.now().plusMinutes(minutesCounter));
+        minutesCounter = minutesCounter + 20;
         return task;
     }
 
@@ -27,6 +35,8 @@ public class TestUtils {
         Task taskToReturn = new Task("newTaskName", "newDescription");
         task.setStatus(Status.DONE);
         taskToReturn.setId(task.getId());
+        task.setStartTime(LocalDateTime.now().plusMinutes(minutesCounter));
+        minutesCounter = minutesCounter + 20;
         return taskToReturn;
     }
 
@@ -49,12 +59,18 @@ public class TestUtils {
 
 
     public Subtask getSubtask(Epic epic) {
-        return new Subtask("testSubtaskName", "testDescription", epic);
+        Subtask subtask = new Subtask("testSubtaskName", "testDescription", epic);
+        subtask.setStartTime(LocalDateTime.now().plusMinutes(minutesCounter));
+        minutesCounter = minutesCounter + 20;
+        return subtask;
+
     }
 
     public Subtask getSubtaskWithNewId(Epic epic) {
         Subtask subtask = new Subtask("testName", "test", epic);
         subtask.setId(++counter);
+        subtask.setStartTime(LocalDateTime.now().plusMinutes(minutesCounter));
+        minutesCounter = minutesCounter + 20;
         return subtask;
     }
 
@@ -63,6 +79,7 @@ public class TestUtils {
         subtaskToReturn.setId(subtask.getId());
         subtaskToReturn.setEpic(subtask.getEpic());
         subtaskToReturn.setStatus(Status.DONE);
+        subtaskToReturn.setStartTime(subtask.getStartTime());
         return subtaskToReturn;
     }
 
@@ -71,6 +88,7 @@ public class TestUtils {
         subtaskToReturn.setId(subtask.getId());
         subtaskToReturn.setEpic(subtask.getEpic());
         subtaskToReturn.setStatus(Status.IN_PROGRESS);
+        subtaskToReturn.setStartTime(subtask.getStartTime());
         return subtaskToReturn;
     }
 

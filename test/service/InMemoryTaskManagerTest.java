@@ -1,5 +1,6 @@
 package service;
 
+import exeptions.TaskTimeCrossException;
 import model.Epic;
 import model.Status;
 import model.Subtask;
@@ -9,6 +10,8 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import testUtils.TestUtils;
 
+import java.time.Duration;
+import java.time.LocalDateTime;
 import java.util.List;
 
 class InMemoryTaskManagerTest {
@@ -239,6 +242,75 @@ class InMemoryTaskManagerTest {
         Task task = inMemoryTaskManager.saveTask(testUtils.getTask());
 
         Assertions.assertEquals(5, task.getId());
+    }
+
+    @Test
+    void checkEpicTime() {
+        shouldSetDefaultEpicTimeWhenEpicSubtaskListEmpty();
+        shouldSetSameEpicTimeWithOnlySubtaskInEpicSubtasksList();
+        shouldCountEpicTimeWhenSeveralSubtasksInEpicSubtasksList();
+
+
+    }
+
+    private void shouldCountEpicTimeWhenSeveralSubtasksInEpicSubtasksList() {
+        Epic epic = inMemoryTaskManager.saveEpic(testUtils.getEpic());
+        Subtask subtask = inMemoryTaskManager.saveSubtask(testUtils.getSubtaskWithNewId(epic));
+        Subtask subtask2 = inMemoryTaskManager.saveSubtask(testUtils.getSubtaskWithNewId(epic));
+        Assertions.assertEquals(epic.getStartTime(), subtask.getStartTime());
+        Assertions.assertEquals(epic.getDuration(), subtask.getDuration().plus(subtask2.getDuration()));
+        Assertions.assertEquals(epic.getEndTime(), subtask2.getEndTime());
+
+    }
+
+    private void shouldSetSameEpicTimeWithOnlySubtaskInEpicSubtasksList() {
+        Epic epic = inMemoryTaskManager.saveEpic(testUtils.getEpic());
+        Subtask subtask = inMemoryTaskManager.saveSubtask(testUtils.getSubtaskWithNewId(epic));
+        Assertions.assertEquals(epic.getStartTime(), subtask.getStartTime());
+        Assertions.assertEquals(epic.getDuration(), subtask.getDuration());
+        Assertions.assertEquals(epic.getEndTime(), subtask.getEndTime());
+    }
+
+    private void shouldSetDefaultEpicTimeWhenEpicSubtaskListEmpty() {
+        Epic epic = inMemoryTaskManager.saveEpic(testUtils.getEpic());
+        Assertions.assertEquals(epic.getStartTime().getMinute(), LocalDateTime.now().getMinute());
+        Assertions.assertEquals(epic.getDuration(), Duration.ofMinutes(10));
+    }
+
+    @Test
+    void isTaskTimeCross() {
+        shouldThrowExceptionWhenSaveTasksWithSameStartTime();
+        shouldThrowExceptionWhenStartTimeTaskTwoCrossDurationTaskOne();
+        shouldNotThrowExceptionWhenStartTimeTaskTwoDontCrossDurationTaskOne();
+
+    }
+
+    private void shouldNotThrowExceptionWhenStartTimeTaskTwoDontCrossDurationTaskOne() {
+        Task task = inMemoryTaskManager.saveTask(testUtils.getTask());
+        Task task2 = new Task("testTask", "test");
+        task2.setStartTime(task.getStartTime().plusMinutes(11));
+        Assertions.assertDoesNotThrow(() -> {
+            inMemoryTaskManager.saveTask(task2);
+        });
+    }
+
+    private void shouldThrowExceptionWhenStartTimeTaskTwoCrossDurationTaskOne() {
+        Task task = inMemoryTaskManager.saveTask(testUtils.getTask());
+        Task task2 = new Task("testTask", "test");
+        task2.setStartTime(task.getStartTime().plusMinutes(9));
+        Assertions.assertThrows(TaskTimeCrossException.class, () -> {
+            inMemoryTaskManager.saveTask(task2);
+        });
+    }
+
+
+    private void shouldThrowExceptionWhenSaveTasksWithSameStartTime() {
+        Task task = inMemoryTaskManager.saveTask(testUtils.getTask());
+        Task task2 = new Task("testTask", "test");
+        task2.setStartTime(task.getStartTime());
+        Assertions.assertThrows(TaskTimeCrossException.class, () -> {
+            inMemoryTaskManager.saveTask(task2);
+        });
     }
 
 

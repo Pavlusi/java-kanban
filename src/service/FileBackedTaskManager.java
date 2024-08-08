@@ -102,7 +102,7 @@ public class FileBackedTaskManager extends InMemoryTaskManager {
             allTasks.addAll(super.getEpicList());
             allTasks.addAll(super.getSubtaskList());
 
-            fileWriter.write("id,type,name,status,description,epic \n");
+            fileWriter.write("id,type,name,status,description,epic, duration, startTime \n");
 
             for (Task task : allTasks) {
                 fileWriter.write(TaskConverter.toString(task));
@@ -129,13 +129,14 @@ public class FileBackedTaskManager extends InMemoryTaskManager {
                     taskManager.allEpics.put(task.getId(), (Epic) task);
                 } else if (task instanceof Subtask subtask) {
                     Epic epic = taskManager.allEpics.get(subtask.getEpic().getId());
-
                     subtask.setEpic(epic);
                     epic.getSubtasks().add(subtask);
 
                     taskManager.allSubtasks.put(subtask.getId(), subtask);
+                    taskManager.prioritizedTasks.add(task);
                 } else {
                     taskManager.allTasks.put(task.getId(), task);
+                    taskManager.prioritizedTasks.add(task);
                 }
             }
             taskManager.idCounter = maxId;
