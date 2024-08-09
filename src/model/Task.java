@@ -20,7 +20,7 @@ public class Task {
         this.description = description;
         this.status = Status.NEW;
         this.startTime = LocalDateTime.now();
-        this.duration = Duration.ofMinutes(10);
+        this.duration = Duration.ofHours(1);
     }
 
     public Task(int id, String name, Status status, String description, LocalDateTime startTime, Duration duration) {
@@ -38,7 +38,7 @@ public class Task {
         this.description = description;
         this.status = status;
         this.startTime = LocalDateTime.now();
-        this.duration = Duration.ofMinutes(10);
+        this.duration = Duration.ofHours(1);
     }
 
     public int getId() {

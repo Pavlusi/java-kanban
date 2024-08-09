@@ -245,6 +245,11 @@ class InMemoryTaskManagerTest {
     }
 
     @Test
+    void shouldGetPrioritizedTasks() {
+        Assertions.assertEquals(inMemoryTaskManager.getPrioritizedTasks().size(), 3);
+    }
+
+    @Test
     void checkEpicTime() {
         shouldSetDefaultEpicTimeWhenEpicSubtaskListEmpty();
         shouldSetSameEpicTimeWithOnlySubtaskInEpicSubtasksList();
@@ -274,7 +279,7 @@ class InMemoryTaskManagerTest {
     private void shouldSetDefaultEpicTimeWhenEpicSubtaskListEmpty() {
         Epic epic = inMemoryTaskManager.saveEpic(testUtils.getEpic());
         Assertions.assertEquals(epic.getStartTime().getMinute(), LocalDateTime.now().getMinute());
-        Assertions.assertEquals(epic.getDuration(), Duration.ofMinutes(10));
+        Assertions.assertEquals(epic.getDuration(), Duration.ofMinutes(60));
     }
 
     @Test
@@ -288,7 +293,7 @@ class InMemoryTaskManagerTest {
     private void shouldNotThrowExceptionWhenStartTimeTaskTwoDontCrossDurationTaskOne() {
         Task task = inMemoryTaskManager.saveTask(testUtils.getTask());
         Task task2 = new Task("testTask", "test");
-        task2.setStartTime(task.getStartTime().plusMinutes(11));
+        task2.setStartTime(task.getStartTime().plusMinutes(120));
         Assertions.assertDoesNotThrow(() -> {
             inMemoryTaskManager.saveTask(task2);
         });

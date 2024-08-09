@@ -18,7 +18,7 @@ public class TestUtils {
     public Task getTask() {
         Task task = new Task("testTaskName", "testDescription");
         task.setStartTime(LocalDateTime.now().plusMinutes(minutesCounter));
-        minutesCounter = minutesCounter + 20;
+        minutesCounter = minutesCounter + 120;
         return task;
     }
 
@@ -27,7 +27,7 @@ public class TestUtils {
         Task task = new Task("testName", "test");
         task.setId(++counter);
         task.setStartTime(LocalDateTime.now().plusMinutes(minutesCounter));
-        minutesCounter = minutesCounter + 20;
+        minutesCounter = minutesCounter + 120;
         return task;
     }
 
@@ -36,7 +36,7 @@ public class TestUtils {
         task.setStatus(Status.DONE);
         taskToReturn.setId(task.getId());
         task.setStartTime(LocalDateTime.now().plusMinutes(minutesCounter));
-        minutesCounter = minutesCounter + 20;
+        minutesCounter = minutesCounter + 120;
         return taskToReturn;
     }
 
@@ -61,7 +61,7 @@ public class TestUtils {
     public Subtask getSubtask(Epic epic) {
         Subtask subtask = new Subtask("testSubtaskName", "testDescription", epic);
         subtask.setStartTime(LocalDateTime.now().plusMinutes(minutesCounter));
-        minutesCounter = minutesCounter + 20;
+        minutesCounter = minutesCounter + 120;
         return subtask;
 
     }
@@ -70,7 +70,7 @@ public class TestUtils {
         Subtask subtask = new Subtask("testName", "test", epic);
         subtask.setId(++counter);
         subtask.setStartTime(LocalDateTime.now().plusMinutes(minutesCounter));
-        minutesCounter = minutesCounter + 20;
+        minutesCounter = minutesCounter + 120;
         return subtask;
     }
 
