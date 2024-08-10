@@ -9,7 +9,7 @@ public class EpicTest {
     private final TestUtils testUtils = new TestUtils();
 
     @Test
-    void shouldAddSubtaskToList(){
+    void shouldAddSubtaskToList() {
         Epic epic = testUtils.getEpic();
         Subtask subtask1 = testUtils.getSubtask(epic);
         epic.addSubtask(subtask1);

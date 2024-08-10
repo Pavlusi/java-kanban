@@ -1,5 +1,7 @@
 package model;
 
+import java.time.Duration;
+import java.time.LocalDateTime;
 import java.util.Objects;
 
 public class Task {
@@ -8,10 +10,26 @@ public class Task {
     private String description;
     private Status status;
 
+    private LocalDateTime startTime;
+
+    private Duration duration;
+
+
     public Task(String name, String description) {
         this.name = name;
         this.description = description;
         this.status = Status.NEW;
+        this.startTime = LocalDateTime.now();
+        this.duration = Duration.ofHours(1);
+    }
+
+    public Task(int id, String name, Status status, String description, LocalDateTime startTime, Duration duration) {
+        this.id = id;
+        this.name = name;
+        this.description = description;
+        this.status = status;
+        this.startTime = startTime;
+        this.duration = duration;
     }
 
     public Task(int id, String name, Status status, String description) {
@@ -19,6 +37,8 @@ public class Task {
         this.name = name;
         this.description = description;
         this.status = status;
+        this.startTime = LocalDateTime.now();
+        this.duration = Duration.ofHours(1);
     }
 
     public int getId() {
@@ -59,6 +79,26 @@ public class Task {
 
     public Epic getEpic() {
         return null;
+    }
+
+    public LocalDateTime getStartTime() {
+        return startTime;
+    }
+
+    public void setStartTime(LocalDateTime startTime) {
+        this.startTime = startTime;
+    }
+
+    public Duration getDuration() {
+        return duration;
+    }
+
+    public void setDuration(Duration duration) {
+        this.duration = duration;
+    }
+
+    public LocalDateTime getEndTime() {
+        return this.startTime.plus(this.duration);
     }
 
     @Override
