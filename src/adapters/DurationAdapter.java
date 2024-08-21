@@ -20,7 +20,7 @@ public class DurationAdapter extends TypeAdapter<Duration> {
 
     @Override
     public Duration read(final JsonReader jsonReader) throws IOException {
-        if (jsonReader.nextString().equals("null")) {
+        if (jsonReader.nextString().equals("null"))  {
             return null;
         }
         return Duration.ofMinutes(Long.parseLong(jsonReader.nextString()));
