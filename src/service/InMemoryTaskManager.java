@@ -1,5 +1,6 @@
 package service;
 
+import exeptions.TaskNotFoundException;
 import exeptions.TaskTimeCrossException;
 import model.Epic;
 import model.Status;
@@ -77,24 +78,35 @@ public class InMemoryTaskManager implements TaskManager {
 
     @Override
     public Task getTaskById(int id) {
-        Task task = allTasks.get(id);
-        historyManager.add(task);
-        return task;
+        if(allTasks.containsKey(id)) {
+            Task task = allTasks.get(id);
+            historyManager.add(task);
+            return task;
+        }
+        throw new TaskNotFoundException("Задача с id:" + id + " не найдена");
+
     }
 
 
     @Override
     public Epic getEpicById(int id) {
-        Epic epic = allEpics.get(id);
-        historyManager.add(epic);
-        return epic;
+        if(allEpics.containsKey(id)) {
+            Epic epic = allEpics.get(id);
+            historyManager.add(epic);
+            return epic;
+        }
+        throw new TaskNotFoundException("Задача с id:" + id + " не найдена");
+
     }
 
     @Override
     public Subtask getSubtaskById(int id) {
-        Subtask subtask = allSubtasks.get(id);
-        historyManager.add(subtask);
-        return subtask;
+        if(allSubtasks.containsKey(id)) {
+            Subtask subtask = allSubtasks.get(id);
+            historyManager.add(subtask);
+            return subtask;
+        }
+        throw new TaskNotFoundException("Задача с id:" + id + " не найдена");
     }
 
 
