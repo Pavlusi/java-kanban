@@ -1,9 +1,13 @@
 package util;
 
 import adapters.DurationAdapter;
+import serializers.EpicSerializer;
 import adapters.LocalDateTimeAdapter;
+import serializers.SubtaskSerializer;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
+import model.Epic;
+import model.Subtask;
 import service.FileBackedTaskManager;
 import service.HistoryManager;
 import service.InMemoryHistoryManager;
@@ -29,6 +33,8 @@ public class Managers {
         GsonBuilder gsonBuilder = new GsonBuilder();
         gsonBuilder.registerTypeAdapter(LocalDateTime.class, new LocalDateTimeAdapter());
         gsonBuilder.registerTypeAdapter(Duration.class, new DurationAdapter());
+        gsonBuilder.registerTypeAdapter(Subtask.class, new SubtaskSerializer());
+        gsonBuilder.registerTypeAdapter(Epic.class, new EpicSerializer());
         return gsonBuilder.create();
     }
 }

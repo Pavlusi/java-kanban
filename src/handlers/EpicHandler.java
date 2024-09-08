@@ -4,8 +4,7 @@ import com.google.gson.Gson;
 import com.sun.net.httpserver.HttpExchange;
 import com.sun.net.httpserver.HttpHandler;
 import exeptions.TaskNotFoundException;
-import exeptions.TaskTimeCrossException;
-import model.Task;
+import model.Epic;
 import service.TaskManager;
 
 import java.io.IOException;
@@ -13,9 +12,9 @@ import java.io.InputStream;
 import java.nio.charset.StandardCharsets;
 import java.util.List;
 
-public class TaskHandler extends BaseHttpHandler implements HttpHandler {
+public class EpicHandler extends BaseHttpHandler implements HttpHandler {
 
-    public TaskHandler(TaskManager taskManager, Gson gson) {
+    public EpicHandler(TaskManager taskManager, Gson gson) {
         super(taskManager, gson);
     }
 
@@ -27,22 +26,35 @@ public class TaskHandler extends BaseHttpHandler implements HttpHandler {
             String path = exchange.getRequestURI().toString();
             switch (method) {
                 case "GET":
-                    Integer taskId = super.getIdFromPath(path);
-                    if (taskId == null) {
-                        try {
-                            List<Task> tasks = taskManager.getTasksList();
-                            String responseJson = gson.toJson(tasks);
-                            sendText(exchange, responseJson);
-                        } catch (Exception e) {
-                            sendServerError(exchange);
+                    Integer epicId = super.getIdFromPath(path);
+                    if (epicId != null) {
+                        String[] param = path.split("/");
+                        if (param[param.length - 1].equals("subtasks")) {
+                            try {
+                                Epic epic = taskManager.getEpicById(epicId);
+                                String responseJson = gson.toJson(epic.getSubtasks());
+                                sendText(exchange, responseJson);
+                            } catch (TaskNotFoundException e) {
+                                sendNotFound(exchange, e.getMessage());
+                            } catch (Exception e) {
+                                sendServerError(exchange);
+                            }
+                        } else {
+                            try {
+                                Epic epic = taskManager.getEpicById(epicId);
+                                String responseJson = gson.toJson(epic);
+                                sendText(exchange, responseJson);
+                            } catch (TaskNotFoundException e) {
+                                sendNotFound(exchange, e.getMessage());
+                            } catch (Exception e) {
+                                sendServerError(exchange);
+                            }
                         }
                     } else {
                         try {
-                            Task task = taskManager.getTaskById(taskId);
-                            String responseJson = gson.toJson(task);
+                            List<Epic> epics = taskManager.getEpicList();
+                            String responseJson = gson.toJson(epics);
                             sendText(exchange, responseJson);
-                        } catch (TaskNotFoundException e) {
-                            sendNotFound(exchange, e.getMessage());
                         } catch (Exception e) {
                             sendServerError(exchange);
                         }
@@ -53,24 +65,20 @@ public class TaskHandler extends BaseHttpHandler implements HttpHandler {
                         String body = new String(inputStream.readAllBytes(), StandardCharsets.UTF_8);
                         if (!body.isEmpty()) {
                             try {
-                                Task postTask = gson.fromJson(body, Task.class);
-                                if (postTask.getId() == null) {
+                                Epic postEpic = gson.fromJson(body, Epic.class);
+                                if (postEpic.getId() == null) {
                                     try {
-                                        taskManager.saveTask(postTask);
+                                        taskManager.saveEpic(postEpic);
                                         writeResponse(exchange, 201);
-                                    } catch (TaskTimeCrossException e) {
-                                        sendHasInteractions(exchange, e.getMessage());
                                     } catch (Exception e) {
                                         sendServerError(exchange);
                                     }
                                 } else {
                                     try {
-                                        taskManager.updateTask(postTask);
+                                        taskManager.updateEpic(postEpic);
                                         writeResponse(exchange, 201);
                                     } catch (TaskNotFoundException e) {
                                         sendNotFound(exchange, e.getMessage());
-                                    } catch (TaskTimeCrossException e) {
-                                        sendHasInteractions(exchange, e.getMessage());
                                     } catch (Exception e) {
                                         sendServerError(exchange);
                                     }
@@ -88,7 +96,7 @@ public class TaskHandler extends BaseHttpHandler implements HttpHandler {
                 case "DELETE":
                     Integer id = super.getIdFromPath(path);
                     try {
-                        taskManager.deleteTaskById(id);
+                        taskManager.deleteEpicById(id);
                         writeResponse(exchange, 201);
                     } catch (TaskNotFoundException e) {
                         sendNotFound(exchange, e.getMessage());
@@ -102,3 +110,4 @@ public class TaskHandler extends BaseHttpHandler implements HttpHandler {
         }
     }
 }
+

@@ -1,5 +1,6 @@
 package service;
 
+import exeptions.TaskNotFoundException;
 import exeptions.TaskTimeCrossException;
 import model.Epic;
 import model.Status;
@@ -169,21 +170,27 @@ class InMemoryTaskManagerTest {
     void shouldDeleteTaskById() {
         inMemoryTaskManager.deleteTaskById(task1.getId());
 
-        Assertions.assertNull(inMemoryTaskManager.getTaskById(task1.getId()));
+        Assertions.assertThrows(TaskNotFoundException.class, () -> {
+            inMemoryTaskManager.getTaskById(task1.getId());
+        });
     }
 
     @Test
     void shouldDeleteEpicById() {
         inMemoryTaskManager.deleteEpicById(epic1.getId());
 
-        Assertions.assertNull(inMemoryTaskManager.getEpicById(epic1.getId()));
+        Assertions.assertThrows(TaskNotFoundException.class, () -> {
+            inMemoryTaskManager.getEpicById(epic1.getId());
+        });
     }
 
     @Test
     void shouldDeleteSubtaskById() {
         inMemoryTaskManager.deleteSubtaskById(subtask1.getId());
 
-        Assertions.assertNull(inMemoryTaskManager.getSubtaskById(subtask1.getId()));
+        Assertions.assertThrows(TaskNotFoundException.class, () -> {
+            inMemoryTaskManager.getSubtaskById(subtask1.getId());
+        });
     }
 
     @Test

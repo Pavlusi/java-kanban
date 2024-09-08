@@ -2,7 +2,6 @@ package handlers;
 
 import com.google.gson.Gson;
 import com.sun.net.httpserver.HttpExchange;
-import com.sun.net.httpserver.HttpHandler;
 import service.TaskManager;
 
 import java.io.IOException;
@@ -33,6 +32,7 @@ public class BaseHttpHandler {
         h.getResponseBody().write(resp);
         h.close();
     }
+
     protected void sendHasInteractions(HttpExchange h, String text) throws IOException {
         byte[] resp = text.getBytes(StandardCharsets.UTF_8);
         h.getResponseHeaders().add("Content-Type", "application/json;charset=utf-8");
@@ -40,6 +40,7 @@ public class BaseHttpHandler {
         h.getResponseBody().write(resp);
         h.close();
     }
+
     public void sendServerError(HttpExchange h) throws IOException {
         byte[] resp = "Ошибка сервера".getBytes(StandardCharsets.UTF_8);
         h.getResponseHeaders().add("Content-Type", "application/json;charset=utf-8");
@@ -47,6 +48,7 @@ public class BaseHttpHandler {
         h.getResponseBody().write(resp);
         h.close();
     }
+
     public void sendBadRequest(HttpExchange h) throws IOException {
         byte[] resp = "Bad Request".getBytes(StandardCharsets.UTF_8);
         h.getResponseHeaders().add("Content-Type", "application/json;charset=utf-8");
@@ -55,17 +57,26 @@ public class BaseHttpHandler {
         h.close();
     }
 
-
-
-    protected Integer getIdFromPath(String path){
-        String[] split = path.split("/");
-        try {
-            return Integer.parseInt(split[split.length-1]);
-        } catch (NumberFormatException e) {
-            return null;
-        }
+    public void writeResponse(HttpExchange h, int code) throws IOException {
+        h.sendResponseHeaders(code, 0);
+        h.close();
     }
 
-
+    protected Integer getIdFromPath(String path) {
+        String[] split = path.split("/");
+        if (split.length < 4) {
+            try {
+                return Integer.parseInt(split[split.length - 1]);
+            } catch (NumberFormatException e) {
+                return null;
+            }
+        } else {
+            try {
+                return Integer.parseInt(split[split.length - 2]);
+            } catch (NumberFormatException e) {
+                return null;
+            }
+        }
+    }
 
 }

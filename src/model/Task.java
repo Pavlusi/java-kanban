@@ -5,7 +5,7 @@ import java.time.LocalDateTime;
 import java.util.Objects;
 
 public class Task {
-    private int id;
+    private Integer id;
     private String name;
     private String description;
     private Status status;
@@ -14,6 +14,10 @@ public class Task {
 
     private Duration duration;
 
+    public Task() {
+        this.startTime = LocalDateTime.now();
+        this.duration = Duration.ofHours(1);
+    }
 
     public Task(String name, String description) {
         this.name = name;
@@ -41,7 +45,7 @@ public class Task {
         this.duration = Duration.ofHours(1);
     }
 
-    public int getId() {
+    public Integer getId() {
         return id;
     }
 

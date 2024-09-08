@@ -1,5 +1,6 @@
 package service;
 
+import exeptions.TaskNotFoundException;
 import model.Epic;
 import model.Status;
 import model.Subtask;
@@ -185,21 +186,27 @@ public class FileBackedTaskManagerTest {
     void shouldDeleteTaskById() {
         fileBackedTaskManager.deleteTaskById(task1.getId());
 
-        Assertions.assertNull(fileBackedTaskManager.getTaskById(task1.getId()));
+        Assertions.assertThrows(TaskNotFoundException.class, () -> {
+            fileBackedTaskManager.getTaskById(task1.getId());
+        });
     }
 
     @Test
     void shouldDeleteEpicById() {
         fileBackedTaskManager.deleteEpicById(epic1.getId());
 
-        Assertions.assertNull(fileBackedTaskManager.getEpicById(epic1.getId()));
+        Assertions.assertThrows(TaskNotFoundException.class, () -> {
+            fileBackedTaskManager.getEpicById(epic1.getId());
+        });
     }
 
     @Test
     void shouldDeleteSubtaskById() {
         fileBackedTaskManager.deleteSubtaskById(subtask1.getId());
 
-        Assertions.assertNull(fileBackedTaskManager.getSubtaskById(subtask1.getId()));
+        Assertions.assertThrows(TaskNotFoundException.class, () -> {
+            fileBackedTaskManager.getSubtaskById(subtask1.getId());
+        });
     }
 
     @Test
