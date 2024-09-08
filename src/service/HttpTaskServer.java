@@ -3,8 +3,6 @@ package service;
 import com.google.gson.Gson;
 import com.sun.net.httpserver.HttpServer;
 import handlers.*;
-import model.Epic;
-import model.Subtask;
 import util.Managers;
 
 import java.io.IOException;
@@ -51,7 +49,7 @@ public class HttpTaskServer {
 
     }
 
-    public static void main(String[] args) throws IOException, InterruptedException {
+    public static void main(String[] args)  {
         HttpTaskServer taskServer = new HttpTaskServer();
         taskServer.startServer();
 
