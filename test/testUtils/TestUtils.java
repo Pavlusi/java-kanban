@@ -14,12 +14,18 @@ public class TestUtils {
     private int counter = 0;
     private int minutesCounter = 0;
 
-
     public Task getTask() {
         Task task = new Task("testTaskName", "testDescription");
         task.setStartTime(LocalDateTime.now().plusMinutes(minutesCounter));
         minutesCounter = minutesCounter + 120;
         return task;
+    }
+
+    public Task getTaskWithSameTime(Task task) {
+        Task taskToReturn = new Task("taskWithSameTime", "testWithSameTime");
+        taskToReturn.setStartTime(task.getStartTime());
+        taskToReturn.setDuration(task.getDuration());
+        return taskToReturn;
     }
 
 
@@ -33,15 +39,17 @@ public class TestUtils {
 
     public Task getUpdatedTaskWithStatusDone(Task task) {
         Task taskToReturn = new Task("newTaskName", "newDescription");
-        task.setStatus(Status.DONE);
+        taskToReturn.setStatus(Status.DONE);
         taskToReturn.setId(task.getId());
-        task.setStartTime(LocalDateTime.now().plusMinutes(minutesCounter));
+        taskToReturn.setStartTime(LocalDateTime.now().plusMinutes(minutesCounter));
         minutesCounter = minutesCounter + 120;
         return taskToReturn;
     }
 
     public Epic getEpic() {
-        return new Epic("testEpicName", "testDescription");
+        Epic epic = new Epic("testEpicName", "testDescription");
+        epic.setEndTime(epic.getStartTime().plus(epic.getDuration()));
+        return epic;
     }
 
     public Epic getEpicWithNewId() {
@@ -54,6 +62,7 @@ public class TestUtils {
         Epic epicToReturn = new Epic("newEpicName", "newDescription");
         epicToReturn.setId(epic.getId());
         epicToReturn.getSubtasks().addAll(epic.getSubtasks());
+        epicToReturn.setEndTime(epic.getStartTime().plus(epic.getDuration()));
         return epicToReturn;
     }
 
@@ -63,7 +72,13 @@ public class TestUtils {
         subtask.setStartTime(LocalDateTime.now().plusMinutes(minutesCounter));
         minutesCounter = minutesCounter + 120;
         return subtask;
+    }
 
+    public Subtask getSubtaskWithSameTime(Subtask subtask) {
+        Subtask subtaskToReturn = new Subtask("testSubtask", "withSameTime", subtask.getEpic());
+        subtaskToReturn.setStartTime(subtask.getStartTime());
+        subtaskToReturn.setDuration(subtask.getDuration());
+        return subtaskToReturn;
     }
 
     public Subtask getSubtaskWithNewId(Epic epic) {
@@ -100,9 +115,7 @@ public class TestUtils {
             tasks.add(task);
         }
         return tasks;
-
     }
-
 }
 
 

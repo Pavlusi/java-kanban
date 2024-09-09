@@ -1,5 +1,6 @@
 package service;
 
+import exeptions.TaskNotFoundException;
 import model.Epic;
 import model.Status;
 import model.Subtask;
@@ -87,7 +88,6 @@ public class FileBackedTaskManagerTest {
         fileBackedTaskManager.deleteAllEpics();
         Assertions.assertEquals(0, fileBackedTaskManager.getEpicList().size());
         Assertions.assertEquals(0, fileBackedTaskManager.getSubtaskList().size());
-
     }
 
     @Test
@@ -178,28 +178,33 @@ public class FileBackedTaskManagerTest {
         Assertions.assertEquals(updatedSubtask.getDescription(), subtaskFromManager.getDescription());
         Assertions.assertEquals(updatedSubtask.getEpic(), subtaskFromManager.getEpic());
         Assertions.assertEquals(updatedSubtask.getStatus(), subtaskFromManager.getStatus());
-
     }
 
     @Test
     void shouldDeleteTaskById() {
         fileBackedTaskManager.deleteTaskById(task1.getId());
 
-        Assertions.assertNull(fileBackedTaskManager.getTaskById(task1.getId()));
+        Assertions.assertThrows(TaskNotFoundException.class, () -> {
+            fileBackedTaskManager.getTaskById(task1.getId());
+        });
     }
 
     @Test
     void shouldDeleteEpicById() {
         fileBackedTaskManager.deleteEpicById(epic1.getId());
 
-        Assertions.assertNull(fileBackedTaskManager.getEpicById(epic1.getId()));
+        Assertions.assertThrows(TaskNotFoundException.class, () -> {
+            fileBackedTaskManager.getEpicById(epic1.getId());
+        });
     }
 
     @Test
     void shouldDeleteSubtaskById() {
         fileBackedTaskManager.deleteSubtaskById(subtask1.getId());
 
-        Assertions.assertNull(fileBackedTaskManager.getSubtaskById(subtask1.getId()));
+        Assertions.assertThrows(TaskNotFoundException.class, () -> {
+            fileBackedTaskManager.getSubtaskById(subtask1.getId());
+        });
     }
 
     @Test
@@ -260,7 +265,6 @@ public class FileBackedTaskManagerTest {
         Assertions.assertEquals(5, task.getId());
     }
 
-
     @Test
     void shouldSaveStateIntroFile() {
         List<Task> tasksFromFile = new ArrayList<>();
@@ -294,6 +298,4 @@ public class FileBackedTaskManagerTest {
         Task task = testManager.saveTask(testUtils.getTask());
         Assertions.assertEquals(5, task.getId());
     }
-
-
 }
