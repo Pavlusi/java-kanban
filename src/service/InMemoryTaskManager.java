@@ -24,13 +24,11 @@ public class InMemoryTaskManager implements TaskManager {
 
     protected TreeSet<Task> prioritizedTasks = new TreeSet<>(Comparator.comparing(Task::getStartTime));
 
-
     @Override
     public List<Task> getTasksList() {
         return new ArrayList<>(allTasks.values());
 
     }
-
 
     @Override
     public List<Epic> getEpicList() {
@@ -38,20 +36,17 @@ public class InMemoryTaskManager implements TaskManager {
 
     }
 
-
     @Override
     public List<Subtask> getSubtaskList() {
         return new ArrayList<>(allSubtasks.values());
 
     }
 
-
     @Override
     public void deleteAllTasks() {
         allTasks.keySet().forEach(id -> historyManager.remove(id));
         allTasks.clear();
     }
-
 
     @Override
     public void deleteAllEpics() {
@@ -60,7 +55,6 @@ public class InMemoryTaskManager implements TaskManager {
         allEpics.clear();
         allSubtasks.clear();
     }
-
 
     @Override
     public void deleteAllSubtask() {
@@ -75,7 +69,6 @@ public class InMemoryTaskManager implements TaskManager {
         allSubtasks.clear();
     }
 
-
     @Override
     public Task getTaskById(int id) {
         if (allTasks.containsKey(id)) {
@@ -86,7 +79,6 @@ public class InMemoryTaskManager implements TaskManager {
         throw new TaskNotFoundException("Задача с id:" + id + " не найдена");
 
     }
-
 
     @Override
     public Epic getEpicById(int id) {
@@ -109,7 +101,6 @@ public class InMemoryTaskManager implements TaskManager {
         throw new TaskNotFoundException("Задача с id:" + id + " не найдена");
     }
 
-
     @Override
     public Task saveTask(Task task) {
         if (isTasksTimeCross(task)) {
@@ -121,14 +112,13 @@ public class InMemoryTaskManager implements TaskManager {
         return task;
     }
 
-
     @Override
     public Epic saveEpic(Epic epic) {
         epic.setId(generateId());
+        checkAndSetEpicTime(epic);
         allEpics.put(epic.getId(), epic);
         return epic;
     }
-
 
     @Override
     public Subtask saveSubtask(Subtask subtask) {
@@ -145,7 +135,6 @@ public class InMemoryTaskManager implements TaskManager {
         return subtask;
 
     }
-
 
     @Override
     public void updateTask(Task updatedTask) {
@@ -165,7 +154,6 @@ public class InMemoryTaskManager implements TaskManager {
 
     }
 
-
     @Override
     public void updateEpic(Epic updatedEpic) {
         if (allEpics.containsKey(updatedEpic.getId())) {
@@ -176,7 +164,6 @@ public class InMemoryTaskManager implements TaskManager {
             throw new TaskNotFoundException("Задача с id:" + updatedEpic.getId() + " не найдена");
         }
     }
-
 
     @Override
     public void updateSubtask(Subtask updatedSubtask) {
@@ -198,9 +185,7 @@ public class InMemoryTaskManager implements TaskManager {
         } else {
             throw new TaskNotFoundException("Задача с id:" + updatedSubtask.getId() + " не найдена");
         }
-
     }
-
 
     @Override
     public void deleteTaskById(int id) {
@@ -211,7 +196,6 @@ public class InMemoryTaskManager implements TaskManager {
             throw new TaskNotFoundException("Задача с id:" + id + " не найдена");
         }
     }
-
 
     @Override
     public void deleteEpicById(int id) {
@@ -225,7 +209,6 @@ public class InMemoryTaskManager implements TaskManager {
             throw new TaskNotFoundException("Задача с id: " + id + "не найдена");
         }
     }
-
 
     @Override
     public void deleteSubtaskById(int id) {
@@ -242,7 +225,6 @@ public class InMemoryTaskManager implements TaskManager {
 
 
     }
-
 
     @Override
     public List<Subtask> getSubtaskByEpicId(int id) {
@@ -275,7 +257,7 @@ public class InMemoryTaskManager implements TaskManager {
     private void checkAndSetEpicTime(Epic epic) {
         if (epic.getSubtasks().isEmpty()) {
             epic.setStartTime(LocalDateTime.now());
-            epic.setDuration(Duration.ofMinutes(10));
+            epic.setDuration(Duration.ofMinutes(60));
             epic.setEndTime(epic.getStartTime().plus(epic.getDuration()));
 
         } else if (epic.getSubtasks().size() == 1) {
@@ -314,6 +296,5 @@ public class InMemoryTaskManager implements TaskManager {
     private int generateId() {
         return ++idCounter;
     }
-
 
 }

@@ -49,7 +49,7 @@ public class HttpTaskServer {
 
     }
 
-    public static void main(String[] args)  {
+    public static void main(String[] args) {
         HttpTaskServer taskServer = new HttpTaskServer();
         taskServer.startServer();
 

@@ -48,7 +48,9 @@ public class TestUtils {
     }
 
     public Epic getEpic() {
-        return new Epic("testEpicName", "testDescription");
+        Epic epic = new Epic("testEpicName", "testDescription");
+        epic.setEndTime(epic.getStartTime().plus(epic.getDuration()));
+        return epic;
     }
 
     public Epic getEpicWithNewId() {
@@ -61,6 +63,7 @@ public class TestUtils {
         Epic epicToReturn = new Epic("newEpicName", "newDescription");
         epicToReturn.setId(epic.getId());
         epicToReturn.getSubtasks().addAll(epic.getSubtasks());
+        epicToReturn.setEndTime(epic.getStartTime().plus(epic.getDuration()));
         return epicToReturn;
     }
 
@@ -113,9 +116,7 @@ public class TestUtils {
             tasks.add(task);
         }
         return tasks;
-
     }
-
 }
 
 

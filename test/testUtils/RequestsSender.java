@@ -28,7 +28,6 @@ public class RequestsSender {
         HttpRequest request = HttpRequest.newBuilder().uri(url).POST(HttpRequest.BodyPublishers.ofString(jsonToPost)).build();
         HttpResponse<String> response = client.send(request, HttpResponse.BodyHandlers.ofString());
         return response;
-
     }
 
     public static HttpResponse<String> sendDeleteRequest(String path) throws IOException, InterruptedException {

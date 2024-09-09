@@ -18,9 +18,8 @@ public class EpicHandler extends BaseHttpHandler implements HttpHandler {
         super(taskManager, gson);
     }
 
-
     @Override
-    public void handle(HttpExchange exchange) throws IOException {
+    public void handle(HttpExchange exchange) {
         try {
             String method = exchange.getRequestMethod();
             String path = exchange.getRequestURI().toString();
