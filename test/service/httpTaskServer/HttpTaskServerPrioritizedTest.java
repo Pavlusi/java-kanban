@@ -46,7 +46,6 @@ public class HttpTaskServerPrioritizedTest {
         server.stopServer();
     }
 
-
     @Test
     public void GetPrioritizedList() throws IOException, InterruptedException {
         taskManager.saveTask(utils.getTask());

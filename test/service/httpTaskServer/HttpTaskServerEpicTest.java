@@ -78,9 +78,7 @@ public class HttpTaskServerEpicTest {
         Epic epic = taskManager.saveEpic(utils.getEpic());
         shouldReturnListSubtasksByEpicId(epic);
         shouldReturnNotFoundWhenRequestNonExistentIdToGetSubtasksGetRequest(epic);
-
     }
-
 
     @Test
     public void SaveNewEpic() throws IOException, InterruptedException {
@@ -101,7 +99,6 @@ public class HttpTaskServerEpicTest {
         shouldDeleteEpicById();
         shouldReturnNotFoundWhenRequestNonExistentIdDeleteRequest();
     }
-
 
     private void shouldReturnEpicById(Epic epicFromManager) throws IOException, InterruptedException {
 
@@ -182,6 +179,4 @@ public class HttpTaskServerEpicTest {
                 + "/subtasks");
         assertEquals(404, response.statusCode(), "Код ответа не соответстует ожидаемому");
     }
-
-
 }

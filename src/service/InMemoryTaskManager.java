@@ -88,7 +88,6 @@ public class InMemoryTaskManager implements TaskManager {
             return epic;
         }
         throw new TaskNotFoundException("Задача с id:" + id + " не найдена");
-
     }
 
     @Override
@@ -222,8 +221,6 @@ public class InMemoryTaskManager implements TaskManager {
         } else {
             throw new TaskNotFoundException("Задача с id:" + id + "не найдена");
         }
-
-
     }
 
     @Override
@@ -296,5 +293,4 @@ public class InMemoryTaskManager implements TaskManager {
     private int generateId() {
         return ++idCounter;
     }
-
 }

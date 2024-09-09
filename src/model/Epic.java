@@ -31,13 +31,10 @@ public class Epic extends Task {
 
     public void addSubtask(Subtask subtasks) {
         this.subtasks.add(subtasks);
-
-
     }
 
     public void removeSubtask(Subtask subtask) {
         this.subtasks.remove(subtask);
-
     }
 
     @Override

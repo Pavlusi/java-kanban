@@ -14,7 +14,6 @@ public class TestUtils {
     private int counter = 0;
     private int minutesCounter = 0;
 
-
     public Task getTask() {
         Task task = new Task("testTaskName", "testDescription");
         task.setStartTime(LocalDateTime.now().plusMinutes(minutesCounter));

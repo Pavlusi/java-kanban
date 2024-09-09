@@ -51,7 +51,6 @@ public class HttpTaskServerSubtasksTest {
         server.stopServer();
     }
 
-
     @Test
     public void GetSubtasksList() throws IOException, InterruptedException {
         Epic epic = taskManager.saveEpic(new Epic("testEpic", "test"));
@@ -75,7 +74,6 @@ public class HttpTaskServerSubtasksTest {
         shouldReturnSubtaskById(subtaskFromManager);
         shouldReturnNotFoundWhenRequestNonExistentIdGetRequest(subtaskFromManager);
     }
-
 
     @Test
     public void SaveNewSubtask() throws IOException, InterruptedException {
@@ -102,7 +100,6 @@ public class HttpTaskServerSubtasksTest {
         shouldDeleteSubtaskById();
         shouldReturnNotFoundWhenRequestNonExistentIdDeleteRequest();
     }
-
 
     private void shouldReturnSubtaskById(Subtask subtaskFromManager) throws IOException, InterruptedException {
 
@@ -191,6 +188,4 @@ public class HttpTaskServerSubtasksTest {
         assertEquals(404, response.statusCode());
         assertNotNull(taskManager.getSubtaskById(subtaskToDelete.getId()));
     }
-
-
 }

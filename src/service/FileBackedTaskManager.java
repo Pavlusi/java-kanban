@@ -17,7 +17,6 @@ public class FileBackedTaskManager extends InMemoryTaskManager {
         this.pathToSaveFile = pathToSaveFile;
     }
 
-
     @Override
     public Task saveTask(Task task) {
         Task task1 = super.saveTask(task);
@@ -93,7 +92,6 @@ public class FileBackedTaskManager extends InMemoryTaskManager {
         save();
     }
 
-
     private void save() throws ManagerSaveException {
         try (FileWriter fileWriter = new FileWriter(pathToSaveFile)) {
 
@@ -140,12 +138,9 @@ public class FileBackedTaskManager extends InMemoryTaskManager {
                 }
             }
             taskManager.idCounter = maxId;
-
         } catch (IOException e) {
             throw new ManagerLoadException("Ошибка загрузки состояния менеджера из файла");
         }
         return taskManager;
-
     }
-
 }

@@ -163,7 +163,6 @@ class InMemoryTaskManagerTest {
         Assertions.assertEquals(updatedSubtask.getDescription(), subtaskFromManager.getDescription());
         Assertions.assertEquals(updatedSubtask.getEpic(), subtaskFromManager.getEpic());
         Assertions.assertEquals(updatedSubtask.getStatus(), subtaskFromManager.getStatus());
-
     }
 
     @Test
@@ -261,8 +260,6 @@ class InMemoryTaskManagerTest {
         shouldSetDefaultEpicTimeWhenEpicSubtaskListEmpty();
         shouldSetSameEpicTimeWithOnlySubtaskInEpicSubtasksList();
         shouldCountEpicTimeWhenSeveralSubtasksInEpicSubtasksList();
-
-
     }
 
     private void shouldCountEpicTimeWhenSeveralSubtasksInEpicSubtasksList() {
@@ -272,7 +269,6 @@ class InMemoryTaskManagerTest {
         Assertions.assertEquals(epic.getStartTime(), subtask.getStartTime());
         Assertions.assertEquals(epic.getDuration(), subtask.getDuration().plus(subtask2.getDuration()));
         Assertions.assertEquals(epic.getEndTime(), subtask2.getEndTime());
-
     }
 
     private void shouldSetSameEpicTimeWithOnlySubtaskInEpicSubtasksList() {
@@ -294,7 +290,6 @@ class InMemoryTaskManagerTest {
         shouldThrowExceptionWhenSaveTasksWithSameStartTime();
         shouldThrowExceptionWhenStartTimeTaskTwoCrossDurationTaskOne();
         shouldNotThrowExceptionWhenStartTimeTaskTwoDontCrossDurationTaskOne();
-
     }
 
     private void shouldNotThrowExceptionWhenStartTimeTaskTwoDontCrossDurationTaskOne() {
@@ -315,7 +310,6 @@ class InMemoryTaskManagerTest {
         });
     }
 
-
     private void shouldThrowExceptionWhenSaveTasksWithSameStartTime() {
         Task task = inMemoryTaskManager.saveTask(testUtils.getTask());
         Task task2 = new Task("testTask", "test");
@@ -324,6 +318,4 @@ class InMemoryTaskManagerTest {
             inMemoryTaskManager.saveTask(task2);
         });
     }
-
-
 }

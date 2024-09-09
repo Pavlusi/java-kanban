@@ -10,7 +10,6 @@ public class InMemoryHistoryManager implements HistoryManager {
     Node first;
     Node last;
 
-
     public void add(Task task) {
         if (task != null) {
             Node node = history.get(task.getId());
@@ -69,7 +68,6 @@ public class InMemoryHistoryManager implements HistoryManager {
         }
         history.put(task.getId(), newNode);
     }
-
 
     private static class Node {
         Node prev;

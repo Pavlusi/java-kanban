@@ -52,7 +52,6 @@ public class HttpTaskServerTasksTest {
         server.stopServer();
     }
 
-
     @Test
     public void GetTasksList() throws IOException, InterruptedException {
         taskManager.saveTask(utils.getTask());
@@ -74,7 +73,6 @@ public class HttpTaskServerTasksTest {
         shouldReturnTaskById(taskFromManager);
         shouldReturnNotFoundWhenRequestNonExistentIdGetRequest(taskFromManager);
     }
-
 
     @Test
     public void SaveNewTask() throws IOException, InterruptedException {
@@ -100,7 +98,6 @@ public class HttpTaskServerTasksTest {
         shouldDeleteTaskById();
         shouldReturnNotFoundWhenRequestNonExistentIdDeleteRequest();
     }
-
 
     private void shouldReturnTaskById(Task taskFromManager) throws IOException, InterruptedException {
 
@@ -187,6 +184,4 @@ public class HttpTaskServerTasksTest {
         assertEquals(404, response.statusCode());
         assertNotNull(taskManager.getTaskById(taskToDelete.getId()));
     }
-
-
 }

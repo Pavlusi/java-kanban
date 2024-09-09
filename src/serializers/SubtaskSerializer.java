@@ -33,7 +33,6 @@ public class SubtaskSerializer implements JsonSerializer<Subtask> {
             epicJson.addProperty("status", epic.getStatus().toString());
             jsonObject.add("epic", epicJson);
         }
-
         return jsonObject;
     }
 }

@@ -47,7 +47,6 @@ public class HttpTaskServerHistoryTest {
         server.stopServer();
     }
 
-
     @Test
     public void GetPrioritizedList() throws IOException, InterruptedException {
         Task task = utils.getTask();
@@ -56,7 +55,6 @@ public class HttpTaskServerHistoryTest {
         taskManager.saveTask(task2);
         taskManager.getTaskById(task.getId());
         taskManager.getTaskById(task2.getId());
-
 
         HttpResponse<String> response = RequestsSender.sendGetRequest("http://localhost:8080/history");
         assertEquals(200, response.statusCode(), "Код ответа не соответсвует ожидаемому");
@@ -68,5 +66,4 @@ public class HttpTaskServerHistoryTest {
 
         assertArrayEquals(tasksFromManager.toArray(), tasksFromServer.toArray(), "Список задач пришедший от сервера не соответствует списку добавленному в менеджер");
     }
-
 }

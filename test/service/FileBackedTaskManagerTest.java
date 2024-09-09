@@ -88,7 +88,6 @@ public class FileBackedTaskManagerTest {
         fileBackedTaskManager.deleteAllEpics();
         Assertions.assertEquals(0, fileBackedTaskManager.getEpicList().size());
         Assertions.assertEquals(0, fileBackedTaskManager.getSubtaskList().size());
-
     }
 
     @Test
@@ -179,7 +178,6 @@ public class FileBackedTaskManagerTest {
         Assertions.assertEquals(updatedSubtask.getDescription(), subtaskFromManager.getDescription());
         Assertions.assertEquals(updatedSubtask.getEpic(), subtaskFromManager.getEpic());
         Assertions.assertEquals(updatedSubtask.getStatus(), subtaskFromManager.getStatus());
-
     }
 
     @Test
@@ -267,7 +265,6 @@ public class FileBackedTaskManagerTest {
         Assertions.assertEquals(5, task.getId());
     }
 
-
     @Test
     void shouldSaveStateIntroFile() {
         List<Task> tasksFromFile = new ArrayList<>();
@@ -301,6 +298,4 @@ public class FileBackedTaskManagerTest {
         Task task = testManager.saveTask(testUtils.getTask());
         Assertions.assertEquals(5, task.getId());
     }
-
-
 }
